@@ -224,7 +224,7 @@ dt_out = 0.05
 
 FASTTemp = "../Sims/_Template/5MW_Land_DLL_WTurb.fst"
 fFASTTemp = weio.FASTInputFile(FASTTemp)
-SimFolder = '../Sims/DLC12_NREL5MWOnShore_SimLength'+str(SimLength).zfill(3)+'s'
+SimFolder = '../Sims/DLC12_NREL5MW'+'_'+str(WindDir).zfill(3)+'_'+str(WaveDir).zfill(3)+'_'+str(SimLength).zfill(3)+'s'
 
 if  os.path.exists(SimFolder) == False:
     os.mkdir(SimFolder)
@@ -248,7 +248,7 @@ for uats in zip(samp.T,SeedNo):
 
 files_fst=[]
 
-for file in glob.glob("../Sims/DLC12_NREL5MWOnShore_SimLength600s/*.fst"):
+for file in glob.glob(SimFolder+'/*.fst'):
     files_fst.append(file)
 
 files_fst.sort()
