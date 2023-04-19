@@ -1,0 +1,3 @@
+sbatch 0001of0001_NREL5MW_sims.sh
+sbatch 0001of0002_NREL5MW_sims.sh
+sbatch 001of2_NREL5MW_sims.sh
