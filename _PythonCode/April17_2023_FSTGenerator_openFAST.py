@@ -235,10 +235,12 @@ for uats in zip(samp.T,SeedNo):
     TI_n, TI_dec = DeciToStr(uats[0][2],2,5)
     a_n, a_dec = DeciToStr(uats[0][1],2,5)
     fFASTTemp['DT']=dt
-    fFASTTemp['TMax']=i+TrasTime
-    fFASTTemp['InflowFile']='"../../Inflow/'+"NREL5MW_InflowWind_"+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(uats[1].astype(int)).zfill(6)+'.dat'
+    fFASTTemp['TMax']=SimLength+TrasTime
+    fFASTTemp['InflowFile']='"../../Inflow/'+"NREL5MW_InflowWind_"+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(uats[1].astype(int)).zfill(6)+'.dat"'
     fFASTTemp['TStart'] = TrasTime
     fFASTTemp['DT_Out'] = dt_out
+    if uats[0][0] > 19:
+        fFASTTemp['EDFile']= '"NRELOffshrBsline5MW_Onshore_ElastoDyn_Pitch20deg.dat"'
     FASTFileName = 'NREL5MW_'+DLC+'_'+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(WindDir).zfill(3)+'_'+str(WaveDir).zfill(3)+'_'+str(uats[1].astype(int)).zfill(6)+'.fst'
     fFASTTemp.write(SimFolder+'/'+FASTFileName)
 
