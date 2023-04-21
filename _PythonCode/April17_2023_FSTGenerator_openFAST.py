@@ -292,6 +292,7 @@ for i in range(1,it_steps.size):
         fFASTBatFile.write(TurbSimExeFile+' '+files_inp[j]+'\n')
         fFASTBatFile.write(FASTExeFile+' '+files_fst[j][8:]+'\n')
         m=m+1
+    fFASTBatFile.write('rm ../TurbSim/*.sum'+ '\n')    
     fFASTBatFile.close()                                      
 
 #%%
