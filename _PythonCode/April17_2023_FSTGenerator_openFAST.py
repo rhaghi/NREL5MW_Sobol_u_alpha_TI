@@ -10,7 +10,7 @@ import chaospy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
-import seaborn as sns
+#import seaborn as sns
 import scipy.stats as st
 import statistics as sts
 import scipy.fftpack
@@ -36,7 +36,6 @@ U = cp.Uniform(lower = 3, upper=25)
  #               )
 
 TI = cp.Uniform(lower = 0.04, upper=0.18*(0.75+5.6/U))
-
 
 
 
@@ -204,8 +203,8 @@ for uats in zip(samp.T,SeedNo):
     TI_n, TI_dec = DeciToStr(uats[0][2],2,5)
     a_n, a_dec = DeciToStr(uats[0][1],2,5)
     BTSFileName =str(HH)+'m_'+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(uats[1].astype(int)).zfill(6)+'.bts'
-    fInflowInput.data[4]['value'] = 3
-    fInflowInput.data[20]['value'] = '"../TurbSim/'+BTSFileName+'"'
+    fInflowInput['WindType']= 3
+    fInflowInput['FileName_BTS'] = '"../TurbSim/'+BTSFileName+'"'
     InflowFileName = "NREL5MW_InflowWind_"+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(uats[1].astype(int)).zfill(6)+'.dat'
     fInflowInput.write("../Inflow/"+InflowFileName)
 
@@ -285,8 +284,8 @@ for i in range(1,it_steps.size):
     fFASTBatFile = open(FASTBatFile,"w")
     fFASTBatFile.write("#!/bin/bash\n")
     fFASTBatFile.write("#SBATCH --account=def-curranc\n")
-    fFASTBatFile.write("#SBATCH --mem-per-cpu=8G      # increase as needed\n")
-    fFASTBatFile.write("#SBATCH --time=48:00:00\n")
+    fFASTBatFile.write("#SBATCH --mem-per-cpu=4G      # increase as needed\n")
+    fFASTBatFile.write("#SBATCH --time=24:00:00\n")
     fFASTBatFile.write("module load StdEnv/2020  intel/2020.1.217 openfast/3.1.0\n")  
     for j in range(it_steps[i-1],it_steps[i]):
         fFASTBatFile.write(TurbSimExeFile+' '+files_inp[j]+'\n')
