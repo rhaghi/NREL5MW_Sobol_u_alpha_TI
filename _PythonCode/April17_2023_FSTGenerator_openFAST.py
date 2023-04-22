@@ -28,7 +28,7 @@ timestr = time.strftime('%Y%m%d')
 
 #%%
 
-nos = 2**5
+nos = 2**6
 U = cp.Uniform(lower = 3, upper=25)
 #TI = cp.Uniform(lower = 0.025, upper = (0.18/U)*(6.8
  #                                     +0.75*U
@@ -149,9 +149,13 @@ NoOfSeeds = nos
 HH = 90
 TrasTime = 60
 SimLength = np.array([600])
-SeedNo = np.arange(0,nos+1)
-
-
+SeedNo = np.arange(1,nos+1)
+DecInFN = 5 #Decimal in file naming
+#%%
+Sobol_Seed_Matrix = np.round(np.vstack((samp,SeedNo.T)),5)
+df = pd.DataFrame(Sobol_Seed_Matrix.T,columns=['u','shear','TI','Seed No'])
+df = df.astype({'Seed No': 'int32'})
+df.to_csv('Sobol_Seed_Matrix.csv')
 #%%
 
 def DeciToStr(x,zfl_x,zfl_d):
@@ -184,9 +188,9 @@ for uats in zip(samp.T,SeedNo):
     fTurbSimInput['WrADHH'] = 'False'
     fTurbSimInput['IECturbc'] = uats[0][0]
     fTurbSimInput['PLExp'] = uats[0][1]
-    u_n, u_dec = DeciToStr(uats[0][0],2,5)
-    TI_n, TI_dec = DeciToStr(uats[0][2],2,5)
-    a_n, a_dec = DeciToStr(uats[0][1],2,5)
+    u_n, u_dec = DeciToStr(uats[0][0],2,DecInFN)
+    TI_n, TI_dec = DeciToStr(uats[0][2],2,DecInFN)
+    a_n, a_dec = DeciToStr(uats[0][1],2,DecInFN)
     TurbSimInputFileName =str(HH)+'m_'+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(uats[1].astype(int)).zfill(6)+'.inp'
     fTurbSimInput.write("../TurbSim/"+TurbSimInputFileName)
             
@@ -199,9 +203,9 @@ InflowFileNameList={}
 for uats in zip(samp.T,SeedNo):    
     fInflowInput = weio.FASTInputFile(InflowInputTemp)
     fInflowInput['m/s'] = uats[0][0]
-    u_n, u_dec = DeciToStr(uats[0][0],2,5)
-    TI_n, TI_dec = DeciToStr(uats[0][2],2,5)
-    a_n, a_dec = DeciToStr(uats[0][1],2,5)
+    u_n, u_dec = DeciToStr(uats[0][0],2,DecInFN)
+    TI_n, TI_dec = DeciToStr(uats[0][2],2,DecInFN)
+    a_n, a_dec = DeciToStr(uats[0][1],2,DecInFN)
     BTSFileName =str(HH)+'m_'+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(uats[1].astype(int)).zfill(6)+'.bts'
     fInflowInput['WindType']= 3
     fInflowInput['FileName_BTS'] = '"../TurbSim/'+BTSFileName+'"'
@@ -230,9 +234,9 @@ if  os.path.exists(SimFolder) == False:
 
 for uats in zip(samp.T,SeedNo): 
     fFASTTemp = weio.FASTInputFile(FASTTemp)
-    u_n, u_dec = DeciToStr(uats[0][0],2,5)
-    TI_n, TI_dec = DeciToStr(uats[0][2],2,5)
-    a_n, a_dec = DeciToStr(uats[0][1],2,5)
+    u_n, u_dec = DeciToStr(uats[0][0],2,DecInFN)
+    TI_n, TI_dec = DeciToStr(uats[0][2],2,DecInFN)
+    a_n, a_dec = DeciToStr(uats[0][1],2,DecInFN)
     fFASTTemp['DT']=dt
     fFASTTemp['TMax']=SimLength+TrasTime
     fFASTTemp['InflowFile']='"../../Inflow/'+"NREL5MW_InflowWind_"+u_n+'p'+u_dec+'mps_ti_'+TI_n+'p'+TI_dec+'_alp_'+a_n+'p'+a_dec+'_'+str(uats[1].astype(int)).zfill(6)+'.dat"'
@@ -272,7 +276,7 @@ FASTExeFile = "openfast"
 TurbSimExeFile = "turbsim"
 
 
-NoFiles = 32
+NoFiles = 16
 TotalNum = nos
 it_steps = np.arange(0,TotalNum+1,NoFiles)
 #it_steps = np.append(it_steps,nos)

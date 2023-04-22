@@ -1,4 +1,0 @@
-sbatch 0001of0001_NREL5MW_sims.sh
-sbatch 20230419_SHELLofshell.sh
-sbatch 20230420_SHELLofshell.sh
-sbatch 20230421_SHELLofshell.sh
